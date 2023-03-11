@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Expressions, Types, Variables, and Errors</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="intro-r_files/libs/clipboard/clipboard.min.js"></script>
+<script src="intro-r_files/libs/quarto-html/quarto.js"></script>
+<script src="intro-r_files/libs/quarto-html/popper.min.js"></script>
+<script src="intro-r_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="intro-r_files/libs/quarto-html/anchor.min.js"></script>
+<link href="intro-r_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="intro-r_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="intro-r_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="intro-r_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="intro-r_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+<style>
+  .CodeMirror pre {
+    background-color: unset !important;
+  }
+  .btn-webr {
+    background-color: #EEEEEE;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/r/r.js"></script>
+<script type="module">
+  import { WebR } from "https://webr.r-wasm.org/v0.1.0/webr.mjs";
+  // Removed {SW_URL: '/'} for the moment
+  globalThis.webR = new WebR();
+  await globalThis.webR.init();
+  globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
+  document.querySelectorAll(".btn-webr").forEach((btn) => {
+    btn.innerText = "Run code";
+    btn.disabled = false;
+  });
+</script>  
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Expressions, Types, Variables, and Errors</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="basic-expressions" class="level3">
+<h3 class="anchored" data-anchor-id="basic-expressions">Basic expressions</h3>
+<ul>
+<li>Kangaroo rat weight (g -&gt; lb)</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-1">Loading webR...</button>
+<div id="webr-editor-1"></div>
+<div id="webr-code-output-1"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-1");
+  const outputDiv = document.getElementById("webr-code-output-1");
+  const editorDiv = document.getElementById("webr-editor-1");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `50 / 1000 * 2.2`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li><p>This is called an expression</p></li>
+<li><p>A set of commands that returns a value</p></li>
+<li><p>Run line</p></li>
+<li><p>Run selection</p></li>
+<li><p><code>Source</code> &amp; <code>Source with Echo</code></p></li>
+<li><p>Save as <code>krat_weight_analysis.R</code></p></li>
+<li><p>Can see in the <code>Files</code> tab that we’ve created this file</p></li>
+<li><p>We can also use this tab to create, delete, and rename files &amp; folders</p></li>
+</ul>
+</section>
+<section id="variables" class="level3">
+<h3 class="anchored" data-anchor-id="variables">Variables</h3>
+<ul>
+<li>To save the values we calculate for later use we use variables</li>
+<li>A variable is a name that has a value associated with it
+<ul>
+<li>Assign using <code>&lt;-</code> or <code>=</code></li>
+</ul></li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-2">Loading webR...</button>
+<div id="webr-editor-2"></div>
+<div id="webr-code-output-2"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-2");
+  const outputDiv = document.getElementById("webr-code-output-2");
+  const editorDiv = document.getElementById("webr-editor-2");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `weight_g <- 50
+weight_g = 50`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li><p>We can see that this variable has been created by looking in the Environment tab</p></li>
+<li><p>It works just like the value itself</p></li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading webR...</button>
+<div id="webr-editor-3"></div>
+<div id="webr-code-output-3"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-3");
+  const outputDiv = document.getElementById("webr-code-output-3");
+  const editorDiv = document.getElementById("webr-editor-3");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `weight_g / 1000
+weight_g / 1000 * 2.2
+weight_lb <- weight_g / 1000 * 2.2`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>It won’t change unless you assign a new value to it directly</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
+<div id="webr-editor-4"></div>
+<div id="webr-code-output-4"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-4");
+  const outputDiv = document.getElementById("webr-code-output-4");
+  const editorDiv = document.getElementById("webr-editor-4");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `weight_g
+weight_g * 2
+weight_g
+weight_g <- 26
+weight_g`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+</section>
+<section id="comments" class="level3">
+<h3 class="anchored" data-anchor-id="comments">Comments</h3>
+<ul>
+<li>Remember what code is doing</li>
+<li>For humans, not computers</li>
+<li>Use the <code>#</code></li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-5">Loading webR...</button>
+<div id="webr-editor-5"></div>
+<div id="webr-code-output-5"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-5");
+  const outputDiv = document.getElementById("webr-code-output-5");
+  const editorDiv = document.getElementById("webr-editor-5");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `# Calculate weight of Kangaroo Rat in pounds`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+</section>
+<section id="assignments-format" class="level3">
+<h3 class="anchored" data-anchor-id="assignments-format">Assignments format</h3>
+<ul>
+<li>Comment before each problem and each sub-problem</li>
+<li>Make sure result prints out on <code>Source with echo</code></li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-6">Loading webR...</button>
+<div id="webr-editor-6"></div>
+<div id="webr-code-output-6"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-6");
+  const outputDiv = document.getElementById("webr-code-output-6");
+  const editorDiv = document.getElementById("webr-editor-6");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `# Problem 1
+
+# 1.1
+2 + 2
+
+# 1.2
+2 - 8
+
+# Problem 2
+
+width = 2
+height = 3
+length = 1.5
+volume = width * height * length
+volume`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<blockquote class="blockquote">
+<p>Create assignment script, put in new folder</p>
+</blockquote>
+<ul>
+<li>Now we’re going to work on some exercises to get a feel for this</li>
+<li>In class we will often only do part of an exercise and save the rest for later</li>
+</ul>
+<blockquote class="blockquote">
+<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Expressions-and-variables-basic-expressions-R/">Exercise 1.1-1.3 - Basic Expressions</a></p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Expressions-and-variables-basic-variables-R/">Exercise 2 - Basic Variables</a></p>
+</blockquote>
+</section>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<ul>
+<li>A function is a complicated expression.</li>
+<li>Command that returns a value</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-7">Loading webR...</button>
+<div id="webr-editor-7"></div>
+<div id="webr-code-output-7"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-7");
+  const outputDiv = document.getElementById("webr-code-output-7");
+  const editorDiv = document.getElementById("webr-editor-7");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `sqrt(49)`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>A function call is composed of two parts.
+<ul>
+<li>Name of the function</li>
+<li>Arguments that the function requires to calculate the value it returns.</li>
+<li><code>sqrt()</code> is the name of the function, and <code>49</code> is the argument.</li>
+</ul></li>
+<li>We can also pass variables as the argument</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
+<div id="webr-editor-8"></div>
+<div id="webr-code-output-8"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-8");
+  const outputDiv = document.getElementById("webr-code-output-8");
+  const editorDiv = document.getElementById("webr-editor-8");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `weight_lb <- 0.11
+sqrt(weight_lb)`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>Another function that we’ll use a lot is <code>str()</code></li>
+<li>All values and therefore all variables have types</li>
+<li><code>str</code>, short for “structure”, lets us look at them</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
+<div id="webr-editor-9"></div>
+<div id="webr-code-output-9"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-9");
+  const outputDiv = document.getElementById("webr-code-output-9");
+  const editorDiv = document.getElementById("webr-editor-9");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `str(weight_lb)`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>Another data type is for text data</li>
+<li>We right text inside of quotation makes</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
+<div id="webr-editor-10"></div>
+<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-10");
+  const outputDiv = document.getElementById("webr-code-output-10");
+  const editorDiv = document.getElementById("webr-editor-10");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `"hello world"`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>If we look at the structure of some text we see that it is type character</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
+<div id="webr-editor-11"></div>
+<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-11");
+  const outputDiv = document.getElementById("webr-code-output-11");
+  const editorDiv = document.getElementById("webr-editor-11");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `str("hello world")`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>Functions can take multiple arguments.
+<ul>
+<li>Round <code>weight_lb</code> to one decimal place</li>
+<li>Typing <code>round()</code> shows there are two arguments</li>
+<li>Number to be rounded and number of digits</li>
+</ul></li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
+<div id="webr-editor-12"></div>
+<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-12");
+  const outputDiv = document.getElementById("webr-code-output-12");
+  const editorDiv = document.getElementById("webr-editor-12");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `round(weight_lb, 1)`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>Functions return values, so as with other values and expressions, if we don’t save the output of a function then there is no way to access it later</li>
+<li>It is common to forget this when dealing with functions and expect the function to have changed the value of the variable</li>
+<li>But looking at <code>weight_lb</code> we see that it hasn’t been rounded</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
+<div id="webr-editor-13"></div>
+<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-13");
+  const outputDiv = document.getElementById("webr-code-output-13");
+  const editorDiv = document.getElementById("webr-editor-13");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `weight_lb`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>To save the output of a function we assign it to a variable.</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-14">Loading webR...</button>
+<div id="webr-editor-14"></div>
+<div id="webr-code-output-14"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-14");
+  const outputDiv = document.getElementById("webr-code-output-14");
+  const editorDiv = document.getElementById("webr-editor-14");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `weight_rounded <- round(weight_lb, 1)
+weight_rounded`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<blockquote class="blockquote">
+<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Functions-built-in-functions-R/">Exercise 4.1-4.3 - Built-in Functions</a></p>
+</blockquote>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
