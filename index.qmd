@@ -7,3 +7,4 @@ filters:
 
 * [Intro to R](intro-r.html)
 * [Vectors](vectors.html)
+* [Into to dplyr](dplyr.html)
