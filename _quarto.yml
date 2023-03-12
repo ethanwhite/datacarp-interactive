@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: _site
+  post-render:
+    - add-extra-files.R
 
 website:
   title: "Interactive Data Lessons"
