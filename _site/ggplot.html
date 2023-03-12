@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Interactive Data Lessons - Vectors</title>
+<title>Interactive Data Lessons - ggplot</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -117,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Basic R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./vectors.html" aria-current="page">
+    <a class="nav-link" href="./vectors.html">
  <span class="menu-text">Vectors</span></a>
   </li>  
   <li class="nav-item">
@@ -125,7 +125,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">dplyr</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./ggplot.html">
+    <a class="nav-link active" href="./ggplot.html" aria-current="page">
  <span class="menu-text">ggplot</span></a>
   </li>  
 </ul>
@@ -143,9 +143,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#vectors-basics" id="toc-vectors-basics" class="nav-link active" data-scroll-target="#vectors-basics">Vectors Basics</a></li>
-  <li><a href="#null-values" id="toc-null-values" class="nav-link" data-scroll-target="#null-values">Null values</a></li>
-  <li><a href="#working-with-multiple-vectors" id="toc-working-with-multiple-vectors" class="nav-link" data-scroll-target="#working-with-multiple-vectors">Working with multiple vectors</a></li>
+  <li><a href="#ggplot" id="toc-ggplot" class="nav-link active" data-scroll-target="#ggplot">ggplot</a></li>
+  <li><a href="#basics" id="toc-basics" class="nav-link" data-scroll-target="#basics">Basics</a></li>
+  <li><a href="#grouping" id="toc-grouping" class="nav-link" data-scroll-target="#grouping">Grouping</a></li>
   </ul>
 </nav>
     </div>
@@ -154,7 +154,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Vectors</h1>
+<h1 class="title">ggplot</h1>
 </div>
 
 
@@ -169,14 +169,35 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+
+<script type="module">
+
+//=== WebR setup ===
+
+import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs'; 
+globalThis.webR = new WebR(); 
+await globalThis.webR.init(); 
+globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
+await globalThis.webR.installPackages(['ggplot2'])
+
+</script>
+
 <div class="cell">
 
 </div>
-<section id="vectors-basics" class="level3">
-<h3 class="anchored" data-anchor-id="vectors-basics">Vectors Basics</h3>
+<section id="ggplot" class="level3">
+<h3 class="anchored" data-anchor-id="ggplot">ggplot</h3>
 <ul>
-<li>A vector is a sequence of values that all have the same type</li>
-<li>You can create a vector using the <code>c()</code> function, which stands for “combine”</li>
+<li>Very popular plotting package</li>
+<li>Good plots quickly</li>
+<li>Declarative - describe what you want not how to build it</li>
+<li>Contrasts w/Imperative - how to build it step by step</li>
+</ul>
+</section>
+<section id="basics" class="level3">
+<h3 class="anchored" data-anchor-id="basics">Basics</h3>
+<ul>
+<li>Load the package and some data</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-1">Loading webR...</button>
@@ -192,8 +213,7 @@ ul.task-list li input[type="checkbox"] {
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `states <- c("FL", "FL", "GA", "SC")
-states`,
+    value: `library(ggplot2)`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -257,7 +277,7 @@ states`,
 
 </div>
 <ul>
-<li>Using the <code>str</code> function we learned last time shows that this is a vector of 4 character strings</li>
+<li>To build a plot using <code>ggplot</code> we start with the <code>ggplot()</code> function</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-2">Loading webR...</button>
@@ -273,165 +293,7 @@ states`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `str(states)`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
-</div>
-<p>You can select pieces of a vector by “slicing” the vector (like slicing a pizza). This is done using square brackets <code>[]</code>. In general <code>[]</code> in R means, “give me a piece of something”.</p>
-<p>If we put one number in the brackets it will us the value that position:</p>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading webR...</button>
-<div id="webr-editor-3"></div>
-<div id="webr-code-output-3"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-3");
-  const outputDiv = document.getElementById("webr-code-output-3");
-  const editorDiv = document.getElementById("webr-editor-3");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `states[1]`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
-</div>
-<p>Try changing this to get the values at different positions.</p>
-<p>If we use two numbers separated by a colon this will give us all the values in the range of those numbers. For <code>1:3</code> will use us the first through third values.</p>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
-<div id="webr-editor-4"></div>
-<div id="webr-code-output-4"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-4");
-  const outputDiv = document.getElementById("webr-code-output-4");
-  const editorDiv = document.getElementById("webr-editor-4");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `states[1:3]`,
+    value: `ggplot()`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -495,11 +357,184 @@ states`,
 
 </div>
 <ul>
-<li><p><code>1:3</code> works by makeing a vector of the whole numbers 1 through 3.</p></li>
-<li><p>So, this is the same as <code>states[1:3]</code> is the same as <code>states[c(1, 2, 3)]</code></p></li>
-<li><p>You can use a vector to get any subset or order you want <code>states[c(4, 1, 3)]</code></p></li>
-<li><p>Many functions in R take a vector as input and return a value</p></li>
-<li><p>This includes the function <code>length</code> which determines how many items are in a vector</p></li>
+<li><code>ggplot()</code> creates a base ggplot object that we can then add things to - like a blank canvas</li>
+<li>We can also add optional arguments for information to be shared across different components of the plot</li>
+<li>The two main arguments we typically use here are</li>
+<li><code>data</code> - which is the name of the data frame we are working with, so <code>acacia</code></li>
+<li><code>mapping</code> - which describes which columns of the data are used for different aspects of the plot</li>
+<li>We create a <code>mapping</code> by using the <code>aes</code> function, which stands for “aesthetic”, and then linking columns to pieces of the plot</li>
+<li>We’ll start with telling ggplot what value should be on the x and y axes</li>
+<li>Let’s plot the relationship betwen the circumference of an acacia and its height</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading webR...</button>
+<div id="webr-editor-3"></div>
+<div id="webr-code-output-3"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-3");
+  const outputDiv = document.getElementById("webr-code-output-3");
+  const editorDiv = document.getElementById("webr-editor-3");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `ggplot(data = mtcars, mapping = aes(x = mpg, y = hp))`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=504, height=360)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>This still doesn’t create a figure, it’s just a blank canvas and some information on default values for data and mapping columns to pieces of the plot</li>
+<li>We can add data to the plot using layers</li>
+<li>We do this by adding a <code>+</code> after the the <code>ggplot</code> function and then adding something called a <code>geom</code>, which stands for <code>geometry</code></li>
+<li>To make a scatter plot we use <code>geom_point</code></li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
+<div id="webr-editor-4"></div>
+<div id="webr-code-output-4"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-4");
+  const outputDiv = document.getElementById("webr-code-output-4");
+  const editorDiv = document.getElementById("webr-editor-4");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
+  geom_point()`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=504, height=360)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li>To change things about the layer we can pass additional arguments to the <code>geom</code></li>
+<li>We can do things like change
+<ul>
+<li>the <code>size</code> of the points, we’ll set it to <code>3</code></li>
+<li>the <code>color</code> of the points, we’ll set it to <code>"blue"</code></li>
+<li>the transparency of the points, which is called <code>alpha</code>, we’ll set it to 0.5</li>
+</ul></li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-5">Loading webR...</button>
@@ -515,7 +550,8 @@ states`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `length(states)`,
+    value: `ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "blue", alpha = 0.5)`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -579,8 +615,8 @@ states`,
 
 </div>
 <ul>
-<li>We can also calculate common summary statistics</li>
-<li>For example, if we have a vector of population counts</li>
+<li><p>Try changing these values to make the graph look like you want it to</p></li>
+<li><p>To add labels (like documentation for your graphs!) we use the <code>labs</code> function</p></li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-6">Loading webR...</button>
@@ -596,11 +632,10 @@ states`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `count <- c(9, 16, 3, 10)
-mean(count)
-max(count)
-min(count)
-sum(count)`,
+    value: `ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
+  geom_point(size = 3, color = "blue", alpha = 0.5) +
+  labs(x = "Miles per Gallon", y = "Horse Power",
+       title = "Car stuff")`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -663,18 +698,12 @@ sum(count)`,
 </script>
 
 </div>
-<blockquote class="blockquote">
-<p>Do <a href="{{ site.baseurl }}/exercises/Vectors-basic-vectors-R/">Basic Vectors</a>.</p>
-</blockquote>
 </section>
-<section id="null-values" class="level3">
-<h3 class="anchored" data-anchor-id="null-values">Null values</h3>
+<section id="grouping" class="level3">
+<h3 class="anchored" data-anchor-id="grouping">Grouping</h3>
 <ul>
-<li>So far we’ve worked with vectors that contain no missing values</li>
-<li>But most real world data has values that are missing for a variety of reasons</li>
-<li>For example, kangaroo rats don’t like being caught by humans and are pretty good at escaping before you’ve finished measuring them</li>
-<li>Missing values, known as “null” values, are written in R as <code>NA</code> with no quotes, which is short for “not available”</li>
-<li>So a vector of 4 population counts with the third value missing would look like</li>
+<li>Group on a single graph</li>
+<li>Look at influence of experimental treatment</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-7">Loading webR...</button>
@@ -690,8 +719,8 @@ sum(count)`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `count_na <- c(9, 16, NA, 10)
-count_na`,
+    value: `ggplot(data = mtcars, mapping = aes(x = mpg, y = hp, color = cyl)) +
+  geom_point(size = 3, alpha = 0.5)`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -755,7 +784,8 @@ count_na`,
 
 </div>
 <ul>
-<li>If we try to take the mean of this vector we get <code>NA</code>?</li>
+<li><p>Try changing the above code to color based on the <code>gear</code></p></li>
+<li><p>We can also split each group into different subplots (known as facets)</p></li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
@@ -771,7 +801,9 @@ count_na`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `mean(count_na)`,
+    value: `ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
+  geom_point(size = 3, alpha = 0.5) +
+  facet_wrap(~cyl)`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -835,12 +867,22 @@ count_na`,
 
 </div>
 <ul>
-<li>Hard to say what a calculation including <code>NA</code> should be</li>
-<li>So most calculations return <code>NA</code> when <code>NA</code> is in the data</li>
-<li>Can tell many functions to remove the <code>NA</code> before calculating</li>
-<li>Do this using an optional argument, which is an argument that we don’t have to include unless we want to modify the default behavior of the function</li>
-<li>Add optional arguments by providing their name (<code>na.rm</code>), <code>=</code>, and the value that we want those arguments to take (<code>TRUE</code>)</li>
+<li>Try changing this code to create a subplot for each value in <code>vs</code> with points of size 4</li>
 </ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Make a scatter plot with <code>hp</code> on the x axis and <code>wt</code> on the y axis. Label the x axis “Horse Power” and the y axis “Weight”.</li>
+<li>Modify the code to make 1 subplot for each value in <code>gear</code>.</li>
+</ol>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
 <div id="webr-editor-9"></div>
@@ -855,7 +897,7 @@ count_na`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `mean(count_na, na.rm = TRUE)`,
+    value: `# Add you code here`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -918,523 +960,10 @@ count_na`,
 </script>
 
 </div>
-<blockquote class="blockquote">
-<p>Do <a href="{{ site.baseurl }}/exercises/Vectors-nulls-in-vectors-R/">Nulls in Vectors</a>.</p>
-</blockquote>
-</section>
-<section id="working-with-multiple-vectors" class="level3">
-<h3 class="anchored" data-anchor-id="working-with-multiple-vectors">Working with multiple vectors</h3>
-<ul>
-<li>Build on example where we have information on states and population counts by adding areas</li>
-</ul>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
-<div id="webr-editor-10"></div>
-<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-10");
-  const outputDiv = document.getElementById("webr-code-output-10");
-  const editorDiv = document.getElementById("webr-editor-10");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `states <- c("FL", "FL", "GA", "SC")
-count <- c(9, 16, 3, 10)
-area <- c(3, 5, 1.9, 2.7)`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
 </div>
-<section id="vector-math" class="level4">
-<h4 class="anchored" data-anchor-id="vector-math">Vector math</h4>
-<ul>
-<li>We can divide the count vector by the area vector to get a vector of the density of individuals in that area</li>
-</ul>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
-<div id="webr-editor-11"></div>
-<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-11");
-  const outputDiv = document.getElementById("webr-code-output-11");
-  const editorDiv = document.getElementById("webr-editor-11");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `density <- count / area`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
 </div>
-<ul>
-<li>This works because when we divide vectors, R divides the first value in the first vector by the first value in the second vector, then divides the second values in each vector, and so on</li>
-<li>Element-wise: operating on one element at a time</li>
-</ul>
-</section>
-<section id="filtering" class="level4">
-<h4 class="anchored" data-anchor-id="filtering">Filtering</h4>
-<ul>
-<li>Subsetting or “filtering” is done using <code>[]</code></li>
-<li>Like with slicing, the <code>[]</code> say “give me a piece of something”</li>
-<li>Selects parts of vectors based on “conditions” not position</li>
-<li>Get the density values in site a</li>
-</ul>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
-<div id="webr-editor-12"></div>
-<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-12");
-  const outputDiv = document.getElementById("webr-code-output-12");
-  const editorDiv = document.getElementById("webr-editor-12");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `density[states == 'FL']`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
-</div>
-<ul>
-<li><p><code>==</code> is how we indicate “equal to” in most programming languages.</p></li>
-<li><p>Not <code>=</code>. <code>=</code> is used for assignment.</p></li>
-<li><p>Can also do “not equal to”</p></li>
-</ul>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
-<div id="webr-editor-13"></div>
-<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-13");
-  const outputDiv = document.getElementById("webr-code-output-13");
-  const editorDiv = document.getElementById("webr-editor-13");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `density[states != 'FL']`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
-</div>
-<ul>
-<li>Numerical comparisons like greater or less than</li>
-<li>Select states that meet with some restrictions on density</li>
-</ul>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-14">Loading webR...</button>
-<div id="webr-editor-14"></div>
-<div id="webr-code-output-14"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-14");
-  const outputDiv = document.getElementById("webr-code-output-14");
-  const editorDiv = document.getElementById("webr-editor-14");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `states[density > 3]
-states[density < 3]
-states[density <= 3]`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
-</div>
-<ul>
-<li>Can subset a vector based on itself</li>
-<li>If we want to look at the densities greater than 3</li>
-<li><code>density</code> is both the vector being subset and part of the condition</li>
-</ul>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-15">Loading webR...</button>
-<div id="webr-editor-15"></div>
-<div id="webr-code-output-15"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-15");
-  const outputDiv = document.getElementById("webr-code-output-15");
-  const editorDiv = document.getElementById("webr-editor-15");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `density[density > 3]`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=504, height=360)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 504);
-            canvas.setAttribute("height", 2 * 360);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
-</div>
-<ul>
-<li>Multiple vectors can be used together to perform element-wise math, where we do the same calculation for each position in the vectors</li>
-<li>We can also filter the values in vector based on the values in another vector or itself</li>
-</ul>
-<blockquote class="blockquote">
-<p>Do <a href="{{ site.baseurl }}/exercises/Vectors-shrub-volume-vectors-R/">Shrub Volume Vectors 1-3</a>.</p>
-</blockquote>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

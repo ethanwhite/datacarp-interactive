@@ -72,9 +72,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/r/r.js"></script>
 <script type="module">
+
+
   import { WebR } from "https://webr.r-wasm.org/v0.1.0/webr.mjs";
-  // Removed {SW_URL: '/'} for the moment
+  
+  
+  // Maybe return the `/` if needed in SW_URL?
   globalThis.webR = new WebR();
+
   await globalThis.webR.init();
   globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
   document.querySelectorAll(".btn-webr").forEach((btn) => {
@@ -118,6 +123,10 @@ ul.task-list li input[type="checkbox"] {
   <li class="nav-item">
     <a class="nav-link active" href="./dplyr.html" aria-current="page">
  <span class="menu-text">dplyr</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./ggplot.html">
+ <span class="menu-text">ggplot</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -222,7 +231,7 @@ library(readr)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -240,8 +249,8 @@ library(readr)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -307,7 +316,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -325,8 +334,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -396,7 +405,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -414,8 +423,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -476,7 +485,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -494,8 +503,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -562,7 +571,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -580,8 +589,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -646,7 +655,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -664,8 +673,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -727,7 +736,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -745,8 +754,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -814,7 +823,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -832,8 +841,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -894,7 +903,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -912,8 +921,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -974,7 +983,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -992,8 +1001,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1072,7 +1081,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1090,8 +1099,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1153,7 +1162,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1171,8 +1180,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1237,7 +1246,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1255,8 +1264,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1317,7 +1326,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1335,8 +1344,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1400,7 +1409,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1418,8 +1427,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1488,7 +1497,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1506,8 +1515,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1576,7 +1585,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1594,8 +1603,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1657,7 +1666,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1675,8 +1684,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
@@ -1739,7 +1748,7 @@ head(surveys)`,
     runButton.disabled = true;
     let canvas = undefined;
     await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
+    await webR.evalRVoid("canvas(width=504, height=360)");
     const result = await webRCodeShelter.captureR(editor.getValue(), {
       withAutoprint: true,
       captureStreams: true,
@@ -1757,8 +1766,8 @@ head(surveys)`,
         if (msg.type === "canvasExec"){
           if (!canvas) {
             canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
+            canvas.setAttribute("width", 2 * 504);
+            canvas.setAttribute("height", 2 * 360);
             canvas.style.width="700px";
             canvas.style.display="block";
             canvas.style.margin="auto";
