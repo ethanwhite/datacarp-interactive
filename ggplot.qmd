@@ -25,6 +25,12 @@ await globalThis.webR.installPackages(['ggplot2'])
 ```{r}
 ```
 
+::: {.callout-warning}
+Installing and loading ggplot2 on webR takes a little while.
+The install is happening in the background.
+Don't worry, once you've waited to load the package everything else will be quick.
+:::
+
 ### ggplot
 
 * Very popular plotting package
