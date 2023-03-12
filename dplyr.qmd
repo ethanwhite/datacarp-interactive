@@ -16,19 +16,6 @@ filters:
 * We will be working with data from the Portal Project.
 * Long-term experimental study of small mammals in Arizona.
 
-#### Dataset
-
-* The dataset is composed of three tables
-* Each table is stored in a `csv` file
-* `csv` stands for "comma separated values"
-* This is common way of storing data that can be used across programming and data management software
-* _Click on species.csv and View File_
-* If we look at one of these files we can see that
-    * It is plain text, so any program can read it
-    * The first row is the header row, with different column headers separated by commas
-    * All of the other rows are the data, again with different columns separated by commas
-    * And so each of the values is separated by commas, hence "comma separated values"
-
 ### Packages
 
 * Main way that reusable code is shared in R

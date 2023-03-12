@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Expressions, Types, Variables, and Errors</title>
+<title>Interactive Data Lessons - Basic R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,16 +23,41 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="intro-r_files/libs/clipboard/clipboard.min.js"></script>
-<script src="intro-r_files/libs/quarto-html/quarto.js"></script>
-<script src="intro-r_files/libs/quarto-html/popper.min.js"></script>
-<script src="intro-r_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="intro-r_files/libs/quarto-html/anchor.min.js"></script>
-<link href="intro-r_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="intro-r_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="intro-r_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="intro-r_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="intro-r_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
 <style>
   .CodeMirror pre {
@@ -59,17 +84,68 @@ ul.task-list li input[type="checkbox"] {
 </script>  
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="fullcontent">
+<body class="nav-fixed">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Interactive Data Lessons</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./intro-r.html" aria-current="page">
+ <span class="menu-text">Basic R</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./vectors.html">
+ <span class="menu-text">Vectors</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./dplyr.html">
+ <span class="menu-text">Working with Tabular Data</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic-expressions" id="toc-basic-expressions" class="nav-link active" data-scroll-target="#basic-expressions">Basic expressions</a></li>
+  <li><a href="#variables" id="toc-variables" class="nav-link" data-scroll-target="#variables">Variables</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Expressions, Types, Variables, and Errors</h1>
+<h1 class="title">Basic R</h1>
 </div>
 
 
@@ -89,9 +165,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="basic-expressions" class="level3">
 <h3 class="anchored" data-anchor-id="basic-expressions">Basic expressions</h3>
-<ul>
-<li>Kangaroo rat weight (g -&gt; lb)</li>
-</ul>
+<p>An expression is a set of commands that returns a value. For example let’s use R to convert a mass of 50 kg into pounds by multiplying it by 2.2.</p>
+<p>Click <code>Run Code</code> to run the following R code.</p>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-1">Loading webR...</button>
 <div id="webr-editor-1"></div>
@@ -106,7 +181,7 @@ ul.task-list li input[type="checkbox"] {
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `50 / 1000 * 2.2`,
+    value: `50 * 2.2`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -170,24 +245,17 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 <ul>
-<li><p>This is called an expression</p></li>
-<li><p>A set of commands that returns a value</p></li>
-<li><p>Run line</p></li>
-<li><p>Run selection</p></li>
-<li><p><code>Source</code> &amp; <code>Source with Echo</code></p></li>
-<li><p>Save as <code>krat_weight_analysis.R</code></p></li>
-<li><p>Can see in the <code>Files</code> tab that we’ve created this file</p></li>
-<li><p>We can also use this tab to create, delete, and rename files &amp; folders</p></li>
+<li><code>50 * 2.2</code> is an expression</li>
+<li>That number <code>110</code> that results from running the code is the resulting value</li>
+<li>Try changing the code above by changing the number <code>50</code> to other weights in pounds to find out the equivalent weight in kilograms</li>
 </ul>
 </section>
 <section id="variables" class="level3">
 <h3 class="anchored" data-anchor-id="variables">Variables</h3>
 <ul>
 <li>To save the values we calculate for later use we use variables</li>
-<li>A variable is a name that has a value associated with it
-<ul>
-<li>Assign using <code>&lt;-</code> or <code>=</code></li>
-</ul></li>
+<li>A variable is a name that has a value associated with it</li>
+<li>We can assign a value to a variable using <code>&lt;-</code></li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-2">Loading webR...</button>
@@ -203,8 +271,7 @@ ul.task-list li input[type="checkbox"] {
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `weight_g <- 50
-weight_g = 50`,
+    value: `weight_kg <- 50`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -268,8 +335,8 @@ weight_g = 50`,
 
 </div>
 <ul>
-<li><p>We can see that this variable has been created by looking in the Environment tab</p></li>
-<li><p>It works just like the value itself</p></li>
+<li>No value is shown when we run this code because the value is stored in the variable</li>
+<li>To see the value we can run the name of the variable on it’s own</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading webR...</button>
@@ -285,9 +352,8 @@ weight_g = 50`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `weight_g / 1000
-weight_g / 1000 * 2.2
-weight_lb <- weight_g / 1000 * 2.2`,
+    value: `weight_kg <- 50
+weight_kg`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -351,7 +417,7 @@ weight_lb <- weight_g / 1000 * 2.2`,
 
 </div>
 <ul>
-<li>It won’t change unless you assign a new value to it directly</li>
+<li>The variable works just like the value itself</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
@@ -367,11 +433,8 @@ weight_lb <- weight_g / 1000 * 2.2`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `weight_g
-weight_g * 2
-weight_g
-weight_g <- 26
-weight_g`,
+    value: `weight_kg * 10
+weight_kg * 2.2`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -434,13 +497,9 @@ weight_g`,
 </script>
 
 </div>
-</section>
-<section id="comments" class="level3">
-<h3 class="anchored" data-anchor-id="comments">Comments</h3>
 <ul>
-<li>Remember what code is doing</li>
-<li>For humans, not computers</li>
-<li>Use the <code>#</code></li>
+<li>The value associate with the variable won’t change unless you assign a new value to it directly</li>
+<li>If we do a calculation with the variable and check it’s value again</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-5">Loading webR...</button>
@@ -456,7 +515,9 @@ weight_g`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `# Calculate weight of Kangaroo Rat in pounds`,
+    value: `weight_kg
+weight_kg * 2
+weight_kg`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -519,12 +580,9 @@ weight_g`,
 </script>
 
 </div>
-</section>
-<section id="assignments-format" class="level3">
-<h3 class="anchored" data-anchor-id="assignments-format">Assignments format</h3>
 <ul>
-<li>Comment before each problem and each sub-problem</li>
-<li>Make sure result prints out on <code>Source with echo</code></li>
+<li>We can see that it doesn’t change</li>
+<li>If we want to update the variable we have to store a new value</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-6">Loading webR...</button>
@@ -540,21 +598,8 @@ weight_g`,
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `# Problem 1
-
-# 1.1
-2 + 2
-
-# 1.2
-2 - 8
-
-# Problem 2
-
-width = 2
-height = 3
-length = 1.5
-volume = width * height * length
-volume`,
+    value: `weight_kg <- 26
+weight_kg`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -617,26 +662,17 @@ volume`,
 </script>
 
 </div>
-<blockquote class="blockquote">
-<p>Create assignment script, put in new folder</p>
-</blockquote>
-<ul>
-<li>Now we’re going to work on some exercises to get a feel for this</li>
-<li>In class we will often only do part of an exercise and save the rest for later</li>
-</ul>
-<blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Expressions-and-variables-basic-expressions-R/">Exercise 1.1-1.3 - Basic Expressions</a></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Expressions-and-variables-basic-variables-R/">Exercise 2 - Basic Variables</a></p>
-</blockquote>
-</section>
-<section id="functions" class="level3">
-<h3 class="anchored" data-anchor-id="functions">Functions</h3>
-<ul>
-<li>A function is a complicated expression.</li>
-<li>Command that returns a value</li>
-</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Here is a small program that converts a mass in kilograms to a mass in grams and then prints out the resulting value.</p>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-7">Loading webR...</button>
 <div id="webr-editor-7"></div>
@@ -645,6 +681,95 @@ volume`,
   const runButton = document.getElementById("webr-run-button-7");
   const outputDiv = document.getElementById("webr-code-output-7");
   const editorDiv = document.getElementById("webr-editor-7");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `mass_kg <- 2.62
+mass_g <- mass_kg * 1000
+mass_g`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<p>Create similar code to convert a mass in pounds to a mass kilograms. * Create a variable to store a body mass in pounds. Assign this variable a value of 3.5 (an appropriate mass for a <a href="https://en.wikipedia.org/wiki/Desert_cottontail">Sylvilagus audubonii</a>). * Convert the variable from body mass in pounds to body mass in kilograms (by dividing it by 2.2046), and assign it to a new variable. * Print the value of the new variable to the screen.</p>
+</div>
+</div>
+</section>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<ul>
+<li>A function is a complicated expression.</li>
+<li>Command that returns a value</li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
+<div id="webr-editor-8"></div>
+<div id="webr-code-output-8"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-8");
+  const outputDiv = document.getElementById("webr-code-output-8");
+  const editorDiv = document.getElementById("webr-editor-8");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -724,13 +849,13 @@ volume`,
 <li>We can also pass variables as the argument</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
-<div id="webr-editor-8"></div>
-<div id="webr-code-output-8"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
+<div id="webr-editor-9"></div>
+<div id="webr-code-output-9"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-8");
-  const outputDiv = document.getElementById("webr-code-output-8");
-  const editorDiv = document.getElementById("webr-editor-8");
+  const runButton = document.getElementById("webr-run-button-9");
+  const outputDiv = document.getElementById("webr-code-output-9");
+  const editorDiv = document.getElementById("webr-editor-9");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -807,13 +932,13 @@ sqrt(weight_lb)`,
 <li><code>str</code>, short for “structure”, lets us look at them</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
-<div id="webr-editor-9"></div>
-<div id="webr-code-output-9"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
+<div id="webr-editor-10"></div>
+<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-9");
-  const outputDiv = document.getElementById("webr-code-output-9");
-  const editorDiv = document.getElementById("webr-editor-9");
+  const runButton = document.getElementById("webr-run-button-10");
+  const outputDiv = document.getElementById("webr-code-output-10");
+  const editorDiv = document.getElementById("webr-editor-10");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -888,13 +1013,13 @@ sqrt(weight_lb)`,
 <li>We right text inside of quotation makes</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
-<div id="webr-editor-10"></div>
-<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
+<div id="webr-editor-11"></div>
+<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-10");
-  const outputDiv = document.getElementById("webr-code-output-10");
-  const editorDiv = document.getElementById("webr-editor-10");
+  const runButton = document.getElementById("webr-run-button-11");
+  const outputDiv = document.getElementById("webr-code-output-11");
+  const editorDiv = document.getElementById("webr-editor-11");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -968,13 +1093,13 @@ sqrt(weight_lb)`,
 <li>If we look at the structure of some text we see that it is type character</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
-<div id="webr-editor-11"></div>
-<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
+<div id="webr-editor-12"></div>
+<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-11");
-  const outputDiv = document.getElementById("webr-code-output-11");
-  const editorDiv = document.getElementById("webr-editor-11");
+  const runButton = document.getElementById("webr-run-button-12");
+  const outputDiv = document.getElementById("webr-code-output-12");
+  const editorDiv = document.getElementById("webr-editor-12");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1053,13 +1178,13 @@ sqrt(weight_lb)`,
 </ul></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
-<div id="webr-editor-12"></div>
-<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
+<div id="webr-editor-13"></div>
+<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-12");
-  const outputDiv = document.getElementById("webr-code-output-12");
-  const editorDiv = document.getElementById("webr-editor-12");
+  const runButton = document.getElementById("webr-run-button-13");
+  const outputDiv = document.getElementById("webr-code-output-13");
+  const editorDiv = document.getElementById("webr-editor-13");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1135,13 +1260,13 @@ sqrt(weight_lb)`,
 <li>But looking at <code>weight_lb</code> we see that it hasn’t been rounded</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
-<div id="webr-editor-13"></div>
-<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-14">Loading webR...</button>
+<div id="webr-editor-14"></div>
+<div id="webr-code-output-14"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-13");
-  const outputDiv = document.getElementById("webr-code-output-13");
-  const editorDiv = document.getElementById("webr-editor-13");
+  const runButton = document.getElementById("webr-run-button-14");
+  const outputDiv = document.getElementById("webr-code-output-14");
+  const editorDiv = document.getElementById("webr-editor-14");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1215,13 +1340,13 @@ sqrt(weight_lb)`,
 <li>To save the output of a function we assign it to a variable.</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-14">Loading webR...</button>
-<div id="webr-editor-14"></div>
-<div id="webr-code-output-14"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-15">Loading webR...</button>
+<div id="webr-editor-15"></div>
+<div id="webr-code-output-15"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-14");
-  const outputDiv = document.getElementById("webr-code-output-14");
-  const editorDiv = document.getElementById("webr-editor-14");
+  const runButton = document.getElementById("webr-run-button-15");
+  const outputDiv = document.getElementById("webr-code-output-15");
+  const editorDiv = document.getElementById("webr-editor-15");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1293,12 +1418,13 @@ weight_rounded`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Functions-built-in-functions-R/">Exercise 4.1-4.3 - Built-in Functions</a></p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Functions-built-in-functions-R/">Exercise 4.1-4.3 - Built-in Functions</a></p>
 </blockquote>
+
+
 </section>
 
-</main>
-<!-- /main column -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

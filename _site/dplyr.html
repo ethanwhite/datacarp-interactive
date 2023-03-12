@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Working with Tabular Data</title>
+<title>Interactive Data Lessons - Working with Tabular Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,16 +23,41 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="dplyr_files/libs/clipboard/clipboard.min.js"></script>
-<script src="dplyr_files/libs/quarto-html/quarto.js"></script>
-<script src="dplyr_files/libs/quarto-html/popper.min.js"></script>
-<script src="dplyr_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="dplyr_files/libs/quarto-html/anchor.min.js"></script>
-<link href="dplyr_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="dplyr_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="dplyr_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="dplyr_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="dplyr_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
 <style>
   .CodeMirror pre {
@@ -59,12 +84,64 @@ ul.task-list li input[type="checkbox"] {
 </script>  
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="fullcontent">
+<body class="nav-fixed">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Interactive Data Lessons</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./intro-r.html">
+ <span class="menu-text">Basic R</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./vectors.html">
+ <span class="menu-text">Vectors</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./dplyr.html" aria-current="page">
+ <span class="menu-text">Working with Tabular Data</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-tabular-data" id="toc-introduction-to-tabular-data" class="nav-link active" data-scroll-target="#introduction-to-tabular-data">Introduction to tabular data</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">Packages</a></li>
+  <li><a href="#basic-dplyr" id="toc-basic-dplyr" class="nav-link" data-scroll-target="#basic-dplyr">Basic <code>dplyr</code></a></li>
+  <li><a href="#filtering-null-values" id="toc-filtering-null-values" class="nav-link" data-scroll-target="#filtering-null-values">Filtering null values</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -93,23 +170,6 @@ ul.task-list li input[type="checkbox"] {
 <li>We will be working with data from the Portal Project.</li>
 <li>Long-term experimental study of small mammals in Arizona.</li>
 </ul>
-<section id="dataset" class="level4">
-<h4 class="anchored" data-anchor-id="dataset">Dataset</h4>
-<ul>
-<li>The dataset is composed of three tables</li>
-<li>Each table is stored in a <code>csv</code> file</li>
-<li><code>csv</code> stands for “comma separated values”</li>
-<li>This is common way of storing data that can be used across programming and data management software</li>
-<li><em>Click on species.csv and View File</em></li>
-<li>If we look at one of these files we can see that
-<ul>
-<li>It is plain text, so any program can read it</li>
-<li>The first row is the header row, with different column headers separated by commas</li>
-<li>All of the other rows are the data, again with different columns separated by commas</li>
-<li>And so each of the values is separated by commas, hence “comma separated values”</li>
-</ul></li>
-</ul>
-</section>
 </section>
 <section id="packages" class="level3">
 <h3 class="anchored" data-anchor-id="packages">Packages</h3>
@@ -560,7 +620,7 @@ head(surveys)`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 1-2</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 1-2</a>.</p>
 </blockquote>
 </section>
 <section id="mutate" class="level4">
@@ -811,7 +871,7 @@ head(surveys)`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 3</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 3</a>.</p>
 </blockquote>
 </section>
 <section id="arrange" class="level4">
@@ -1058,7 +1118,7 @@ head(surveys)`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 4</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 4</a>.</p>
 </blockquote>
 </section>
 <section id="filter" class="level4">
@@ -1484,7 +1544,7 @@ head(surveys)`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 5-7</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 5-7</a>.</p>
 </blockquote>
 </section>
 </section>
@@ -1823,12 +1883,13 @@ head(surveys)`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 8</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Dplyr-shrub-volume-data-basics-R">Shrub Volume Data Basics 8</a>.</p>
 </blockquote>
+
+
 </section>
 
-</main>
-<!-- /main column -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
