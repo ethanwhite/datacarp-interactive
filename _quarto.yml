@@ -1,2 +1,20 @@
 project:
+  type: website
   output-dir: _site
+
+website:
+  title: "Interactive Data Lessons"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - intro-r.qmd
+      - vectors.qmd
+      - dplyr.qmd
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    toc: true
+

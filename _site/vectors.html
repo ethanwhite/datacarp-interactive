@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Vectors</title>
+<title>Interactive Data Lessons - Vectors</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,16 +23,41 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="vectors_files/libs/clipboard/clipboard.min.js"></script>
-<script src="vectors_files/libs/quarto-html/quarto.js"></script>
-<script src="vectors_files/libs/quarto-html/popper.min.js"></script>
-<script src="vectors_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="vectors_files/libs/quarto-html/anchor.min.js"></script>
-<link href="vectors_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="vectors_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="vectors_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="vectors_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="vectors_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
 <style>
   .CodeMirror pre {
@@ -59,12 +84,63 @@ ul.task-list li input[type="checkbox"] {
 </script>  
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="fullcontent">
+<body class="nav-fixed">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Interactive Data Lessons</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./intro-r.html">
+ <span class="menu-text">Basic R</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./vectors.html" aria-current="page">
+ <span class="menu-text">Vectors</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./dplyr.html">
+ <span class="menu-text">Working with Tabular Data</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#vectors-basics" id="toc-vectors-basics" class="nav-link active" data-scroll-target="#vectors-basics">Vectors Basics</a></li>
+  <li><a href="#null-values" id="toc-null-values" class="nav-link" data-scroll-target="#null-values">Null values</a></li>
+  <li><a href="#working-with-multiple-vectors" id="toc-working-with-multiple-vectors" class="nav-link" data-scroll-target="#working-with-multiple-vectors">Working with multiple vectors</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -90,9 +166,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="vectors-basics" class="level3">
 <h3 class="anchored" data-anchor-id="vectors-basics">Vectors Basics</h3>
 <ul>
-<li>Remember that all values in R have a type</li>
 <li>A vector is a sequence of values that all have the same type</li>
-<li>Create using the <code>c()</code> function, which stands for “combine”</li>
+<li>You can create a vector using the <code>c()</code> function, which stands for “combine”</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-1">Loading webR...</button>
@@ -108,7 +183,8 @@ ul.task-list li input[type="checkbox"] {
     elt.style.height = "auto";
     editorDiv.append(elt);
   },{
-    value: `states <- c("FL", "FL", "GA", "SC")`,
+    value: `states <- c("FL", "FL", "GA", "SC")
+states`,
     lineNumbers: true,
     mode: "r",
     theme: "light default",
@@ -251,18 +327,8 @@ ul.task-list li input[type="checkbox"] {
 </script>
 
 </div>
-<ul>
-<li><p>Select pieces of a vector by slicing the vector (like slicing a pizza)</p></li>
-<li><p>Use square brackets <code>[]</code></p></li>
-<li><p>In general <code>[]</code> in R means, “give me a piece of something”</p></li>
-<li><p><code>states[1]</code> gives us the first value in the vector</p></li>
-<li><p><code>states[1:3]</code> gives us the first through the third values</p></li>
-<li><p><code>1:3</code> works by makeing a vector of the whole numbers 1 through 3.</p></li>
-<li><p>So, this is the same as <code>states[1:3]</code> is the same as <code>states[c(1, 2, 3)]</code></p></li>
-<li><p>You can use a vector to get any subset or order you want <code>states[c(4, 1, 3)]</code></p></li>
-<li><p>Many functions in R take a vector as input and return a value</p></li>
-<li><p>This includes the function <code>length</code> which determines how many items are in a vector</p></li>
-</ul>
+<p>You can select pieces of a vector by “slicing” the vector (like slicing a pizza). This is done using square brackets <code>[]</code>. In general <code>[]</code> in R means, “give me a piece of something”.</p>
+<p>If we put one number in the brackets it will us the value that position:</p>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading webR...</button>
 <div id="webr-editor-3"></div>
@@ -271,6 +337,169 @@ ul.task-list li input[type="checkbox"] {
   const runButton = document.getElementById("webr-run-button-3");
   const outputDiv = document.getElementById("webr-code-output-3");
   const editorDiv = document.getElementById("webr-editor-3");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `states[1]`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<p>Try changing this to get the values at different positions.</p>
+<p>If we use two numbers separated by a colon this will give us all the values in the range of those numbers. For <code>1:3</code> will use us the first through third values.</p>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
+<div id="webr-editor-4"></div>
+<div id="webr-code-output-4"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-4");
+  const outputDiv = document.getElementById("webr-code-output-4");
+  const editorDiv = document.getElementById("webr-editor-4");
+
+  const editor = CodeMirror((elt) => {
+    elt.style.border = "1px solid #eee";
+    elt.style.height = "auto";
+    editorDiv.append(elt);
+  },{
+    value: `states[1:3]`,
+    lineNumbers: true,
+    mode: "r",
+    theme: "light default",
+    viewportMargin: Infinity,
+  });
+
+  runButton.onclick = async () => {
+    runButton.disabled = true;
+    let canvas = undefined;
+    await globalThis.webR.init();
+    await webR.evalRVoid("canvas(width=7, height=7)");
+    const result = await webRCodeShelter.captureR(editor.getValue(), {
+      withAutoprint: true,
+      captureStreams: true,
+      captureConditions: false,
+      env: webR.objs.emptyEnv,
+    });
+    try {
+      await webR.evalRVoid("dev.off()");
+      const out = result.output.filter(
+        evt => evt.type == "stdout" || evt.type == "stderr"
+      ).map((evt) => evt.data).join("\n");
+
+      const msgs = await webR.flush();
+      msgs.forEach(msg => {
+        if (msg.type === "canvasExec"){
+          if (!canvas) {
+            canvas = document.createElement("canvas");
+            canvas.setAttribute("width", 2 * 7);
+            canvas.setAttribute("height", 2 * 7);
+            canvas.style.width="700px";
+            canvas.style.display="block";
+            canvas.style.margin="auto";
+          }
+          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
+        }
+      });
+
+      outputDiv.innerHTML = "";
+      const pre = document.createElement("pre");
+      if (/\S/.test(out)) {
+        const code = document.createElement("code");
+        code.innerText = out;
+        pre.appendChild(code);
+      } else {
+        pre.style.visibility = "hidden";
+      }
+      outputDiv.appendChild(pre);
+
+      if (canvas) {
+        const p = document.createElement("p");
+        p.appendChild(canvas);
+        outputDiv.appendChild(p);
+      }
+    } finally {
+      webRCodeShelter.purge();
+      runButton.disabled = false;
+    }
+  }
+</script>
+
+</div>
+<ul>
+<li><p><code>1:3</code> works by makeing a vector of the whole numbers 1 through 3.</p></li>
+<li><p>So, this is the same as <code>states[1:3]</code> is the same as <code>states[c(1, 2, 3)]</code></p></li>
+<li><p>You can use a vector to get any subset or order you want <code>states[c(4, 1, 3)]</code></p></li>
+<li><p>Many functions in R take a vector as input and return a value</p></li>
+<li><p>This includes the function <code>length</code> which determines how many items are in a vector</p></li>
+</ul>
+<div class="cell">
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-5">Loading webR...</button>
+<div id="webr-editor-5"></div>
+<div id="webr-code-output-5"><pre style="visibility: hidden"></pre></div>
+<script type="module">
+  const runButton = document.getElementById("webr-run-button-5");
+  const outputDiv = document.getElementById("webr-code-output-5");
+  const editorDiv = document.getElementById("webr-editor-5");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -345,13 +574,13 @@ ul.task-list li input[type="checkbox"] {
 <li>For example, if we have a vector of population counts</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
-<div id="webr-editor-4"></div>
-<div id="webr-code-output-4"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-6">Loading webR...</button>
+<div id="webr-editor-6"></div>
+<div id="webr-code-output-6"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-4");
-  const outputDiv = document.getElementById("webr-code-output-4");
-  const editorDiv = document.getElementById("webr-editor-4");
+  const runButton = document.getElementById("webr-run-button-6");
+  const outputDiv = document.getElementById("webr-code-output-6");
+  const editorDiv = document.getElementById("webr-editor-6");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -426,7 +655,7 @@ sum(count)`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Vectors-basic-vectors-R/">Basic Vectors</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Vectors-basic-vectors-R/">Basic Vectors</a>.</p>
 </blockquote>
 </section>
 <section id="null-values" class="level3">
@@ -439,13 +668,13 @@ sum(count)`,
 <li>So a vector of 4 population counts with the third value missing would look like</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-5">Loading webR...</button>
-<div id="webr-editor-5"></div>
-<div id="webr-code-output-5"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-7">Loading webR...</button>
+<div id="webr-editor-7"></div>
+<div id="webr-code-output-7"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-5");
-  const outputDiv = document.getElementById("webr-code-output-5");
-  const editorDiv = document.getElementById("webr-editor-5");
+  const runButton = document.getElementById("webr-run-button-7");
+  const outputDiv = document.getElementById("webr-code-output-7");
+  const editorDiv = document.getElementById("webr-editor-7");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -520,13 +749,13 @@ count_na`,
 <li>If we try to take the mean of this vector we get <code>NA</code>?</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-6">Loading webR...</button>
-<div id="webr-editor-6"></div>
-<div id="webr-code-output-6"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
+<div id="webr-editor-8"></div>
+<div id="webr-code-output-8"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-6");
-  const outputDiv = document.getElementById("webr-code-output-6");
-  const editorDiv = document.getElementById("webr-editor-6");
+  const runButton = document.getElementById("webr-run-button-8");
+  const outputDiv = document.getElementById("webr-code-output-8");
+  const editorDiv = document.getElementById("webr-editor-8");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -604,13 +833,13 @@ count_na`,
 <li>Add optional arguments by providing their name (<code>na.rm</code>), <code>=</code>, and the value that we want those arguments to take (<code>TRUE</code>)</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-7">Loading webR...</button>
-<div id="webr-editor-7"></div>
-<div id="webr-code-output-7"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
+<div id="webr-editor-9"></div>
+<div id="webr-code-output-9"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-7");
-  const outputDiv = document.getElementById("webr-code-output-7");
-  const editorDiv = document.getElementById("webr-editor-7");
+  const runButton = document.getElementById("webr-run-button-9");
+  const outputDiv = document.getElementById("webr-code-output-9");
+  const editorDiv = document.getElementById("webr-editor-9");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -681,7 +910,7 @@ count_na`,
 
 </div>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Vectors-nulls-in-vectors-R/">Nulls in Vectors</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Vectors-nulls-in-vectors-R/">Nulls in Vectors</a>.</p>
 </blockquote>
 </section>
 <section id="working-with-multiple-vectors" class="level3">
@@ -690,13 +919,13 @@ count_na`,
 <li>Build on example where we have information on states and population counts by adding areas</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
-<div id="webr-editor-8"></div>
-<div id="webr-code-output-8"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
+<div id="webr-editor-10"></div>
+<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-8");
-  const outputDiv = document.getElementById("webr-code-output-8");
-  const editorDiv = document.getElementById("webr-editor-8");
+  const runButton = document.getElementById("webr-run-button-10");
+  const outputDiv = document.getElementById("webr-code-output-10");
+  const editorDiv = document.getElementById("webr-editor-10");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -774,13 +1003,13 @@ area <- c(3, 5, 1.9, 2.7)`,
 <li>We can divide the count vector by the area vector to get a vector of the density of individuals in that area</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
-<div id="webr-editor-9"></div>
-<div id="webr-code-output-9"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
+<div id="webr-editor-11"></div>
+<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-9");
-  const outputDiv = document.getElementById("webr-code-output-9");
-  const editorDiv = document.getElementById("webr-editor-9");
+  const runButton = document.getElementById("webr-run-button-11");
+  const outputDiv = document.getElementById("webr-code-output-11");
+  const editorDiv = document.getElementById("webr-editor-11");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -864,13 +1093,13 @@ area <- c(3, 5, 1.9, 2.7)`,
 <li>Get the density values in site a</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
-<div id="webr-editor-10"></div>
-<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
+<div id="webr-editor-12"></div>
+<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-10");
-  const outputDiv = document.getElementById("webr-code-output-10");
-  const editorDiv = document.getElementById("webr-editor-10");
+  const runButton = document.getElementById("webr-run-button-12");
+  const outputDiv = document.getElementById("webr-code-output-12");
+  const editorDiv = document.getElementById("webr-editor-12");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -946,13 +1175,13 @@ area <- c(3, 5, 1.9, 2.7)`,
 <li><p>Can also do “not equal to”</p></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
-<div id="webr-editor-11"></div>
-<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
+<div id="webr-editor-13"></div>
+<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-11");
-  const outputDiv = document.getElementById("webr-code-output-11");
-  const editorDiv = document.getElementById("webr-editor-11");
+  const runButton = document.getElementById("webr-run-button-13");
+  const outputDiv = document.getElementById("webr-code-output-13");
+  const editorDiv = document.getElementById("webr-editor-13");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1027,13 +1256,13 @@ area <- c(3, 5, 1.9, 2.7)`,
 <li>Select states that meet with some restrictions on density</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
-<div id="webr-editor-12"></div>
-<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-14">Loading webR...</button>
+<div id="webr-editor-14"></div>
+<div id="webr-code-output-14"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-12");
-  const outputDiv = document.getElementById("webr-code-output-12");
-  const editorDiv = document.getElementById("webr-editor-12");
+  const runButton = document.getElementById("webr-run-button-14");
+  const outputDiv = document.getElementById("webr-code-output-14");
+  const editorDiv = document.getElementById("webr-editor-14");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1111,13 +1340,13 @@ states[density <= 3]`,
 <li><code>density</code> is both the vector being subset and part of the condition</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
-<div id="webr-editor-13"></div>
-<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-15">Loading webR...</button>
+<div id="webr-editor-15"></div>
+<div id="webr-code-output-15"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-13");
-  const outputDiv = document.getElementById("webr-code-output-13");
-  const editorDiv = document.getElementById("webr-editor-13");
+  const runButton = document.getElementById("webr-run-button-15");
+  const outputDiv = document.getElementById("webr-code-output-15");
+  const editorDiv = document.getElementById("webr-editor-15");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1192,13 +1421,14 @@ states[density <= 3]`,
 <li>We can also filter the values in vector based on the values in another vector or itself</li>
 </ul>
 <blockquote class="blockquote">
-<p>Do <a href="%7B%7B%20site.baseurl%20%7D%7D/exercises/Vectors-shrub-volume-vectors-R/">Shrub Volume Vectors 1-3</a>.</p>
+<p>Do <a href="{{ site.baseurl }}/exercises/Vectors-shrub-volume-vectors-R/">Shrub Volume Vectors 1-3</a>.</p>
 </blockquote>
+
+
 </section>
 </section>
 
-</main>
-<!-- /main column -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
