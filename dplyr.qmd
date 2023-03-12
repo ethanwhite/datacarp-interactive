@@ -57,21 +57,6 @@ surveys <- read_csv("surveys.csv")
 head(surveys)
 ```
 
-* Display data by clicking on it in `Environment`
-* Three tables
-    * `surveys` - main table, one row for each rodent captured, date on date,
-      location, species ID, sex, and size
-    * `species` - latin species names for each species ID + general taxon
-    * `plots` - information on the experimental manipulations at the site
-
-* Good tabular data structure
-    * One table per type of data
-        * Tables can be linked together to combine information.
-    * Each row contains a single record.
-        * A single observation or data point
-    * Each column or field contains a single attribute.
-        * A single type of information
-
 ### Basic `dplyr`
 
 * Modern data manipulation library for R
