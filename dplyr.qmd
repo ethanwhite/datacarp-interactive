@@ -11,6 +11,20 @@ filters:
 ```{r}
 ```
 
+<html>
+<script type="module">
+
+//=== WebR setup ===
+
+import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs'; 
+globalThis.webR = new WebR(); 
+await globalThis.webR.init(); 
+globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
+await globalThis.webR.installPackages(['dplyr', 'readr'])
+
+</script>
+</html>
+
 ### Introduction to tabular data
 
 * We will be working with data from the Portal Project.
@@ -21,13 +35,7 @@ filters:
 * Main way that reusable code is shared in R
 * Combination of code, data, and documentation
 * R has a rich ecosystem of packages for data manipulation & analysis
-* Download and install packages with the R console:
-
-```{webr}
-webr::install('readr')
-webr::install('dplyr')
-```
-
+* We've already installed the packages for this demo
 * Even if we've installed a package it is automatically available to do analysis with
 * This because different packages may have functions with the same names
 * So don't want to have to worry about all of the packages we've installed every time we right a piece of code

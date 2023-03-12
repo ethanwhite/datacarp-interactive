@@ -164,6 +164,19 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 
 </div>
+
+<script type="module">
+
+//=== WebR setup ===
+
+import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs'; 
+globalThis.webR = new WebR(); 
+await globalThis.webR.init(); 
+globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
+await globalThis.webR.installPackages(['dplyr', 'readr'])
+
+</script>
+
 <section id="introduction-to-tabular-data" class="level3">
 <h3 class="anchored" data-anchor-id="introduction-to-tabular-data">Introduction to tabular data</h3>
 <ul>
@@ -177,7 +190,11 @@ ul.task-list li input[type="checkbox"] {
 <li>Main way that reusable code is shared in R</li>
 <li>Combination of code, data, and documentation</li>
 <li>R has a rich ecosystem of packages for data manipulation &amp; analysis</li>
-<li>Download and install packages with the R console:</li>
+<li>We’ve already installed the packages for this demo</li>
+<li>Even if we’ve installed a package it is automatically available to do analysis with</li>
+<li>This because different packages may have functions with the same names</li>
+<li>So don’t want to have to worry about all of the packages we’ve installed every time we right a piece of code</li>
+<li>Load all of the functions in the package:</li>
 </ul>
 <div class="cell">
 <button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-1">Loading webR...</button>
@@ -187,90 +204,6 @@ ul.task-list li input[type="checkbox"] {
   const runButton = document.getElementById("webr-run-button-1");
   const outputDiv = document.getElementById("webr-code-output-1");
   const editorDiv = document.getElementById("webr-editor-1");
-
-  const editor = CodeMirror((elt) => {
-    elt.style.border = "1px solid #eee";
-    elt.style.height = "auto";
-    editorDiv.append(elt);
-  },{
-    value: `webr::install('readr')
-webr::install('dplyr')`,
-    lineNumbers: true,
-    mode: "r",
-    theme: "light default",
-    viewportMargin: Infinity,
-  });
-
-  runButton.onclick = async () => {
-    runButton.disabled = true;
-    let canvas = undefined;
-    await globalThis.webR.init();
-    await webR.evalRVoid("canvas(width=7, height=7)");
-    const result = await webRCodeShelter.captureR(editor.getValue(), {
-      withAutoprint: true,
-      captureStreams: true,
-      captureConditions: false,
-      env: webR.objs.emptyEnv,
-    });
-    try {
-      await webR.evalRVoid("dev.off()");
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
-
-      const msgs = await webR.flush();
-      msgs.forEach(msg => {
-        if (msg.type === "canvasExec"){
-          if (!canvas) {
-            canvas = document.createElement("canvas");
-            canvas.setAttribute("width", 2 * 7);
-            canvas.setAttribute("height", 2 * 7);
-            canvas.style.width="700px";
-            canvas.style.display="block";
-            canvas.style.margin="auto";
-          }
-          Function(`this.getContext("2d").${msg.data}`).bind(canvas)();
-        }
-      });
-
-      outputDiv.innerHTML = "";
-      const pre = document.createElement("pre");
-      if (/\S/.test(out)) {
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
-      } else {
-        pre.style.visibility = "hidden";
-      }
-      outputDiv.appendChild(pre);
-
-      if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
-      }
-    } finally {
-      webRCodeShelter.purge();
-      runButton.disabled = false;
-    }
-  }
-</script>
-
-</div>
-<ul>
-<li>Even if we’ve installed a package it is automatically available to do analysis with</li>
-<li>This because different packages may have functions with the same names</li>
-<li>So don’t want to have to worry about all of the packages we’ve installed every time we right a piece of code</li>
-<li>Load all of the functions in the package:</li>
-</ul>
-<div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-2">Loading webR...</button>
-<div id="webr-editor-2"></div>
-<div id="webr-code-output-2"><pre style="visibility: hidden"></pre></div>
-<script type="module">
-  const runButton = document.getElementById("webr-run-button-2");
-  const outputDiv = document.getElementById("webr-code-output-2");
-  const editorDiv = document.getElementById("webr-editor-2");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -347,13 +280,13 @@ library(readr)`,
 <li>Lets download the <code>surveys.csv</code> and load into <code>R</code> using <code>read.csv()</code>.</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading webR...</button>
-<div id="webr-editor-3"></div>
-<div id="webr-code-output-3"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-2">Loading webR...</button>
+<div id="webr-editor-2"></div>
+<div id="webr-code-output-2"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-3");
-  const outputDiv = document.getElementById("webr-code-output-3");
-  const editorDiv = document.getElementById("webr-editor-3");
+  const runButton = document.getElementById("webr-run-button-2");
+  const outputDiv = document.getElementById("webr-code-output-2");
+  const editorDiv = document.getElementById("webr-editor-2");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -463,13 +396,13 @@ head(surveys)`,
 <li>Select a subset of columns.</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
-<div id="webr-editor-4"></div>
-<div id="webr-code-output-4"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading webR...</button>
+<div id="webr-editor-3"></div>
+<div id="webr-code-output-3"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-4");
-  const outputDiv = document.getElementById("webr-code-output-4");
-  const editorDiv = document.getElementById("webr-editor-4");
+  const runButton = document.getElementById("webr-run-button-3");
+  const outputDiv = document.getElementById("webr-code-output-3");
+  const editorDiv = document.getElementById("webr-editor-3");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -543,13 +476,13 @@ head(surveys)`,
 <li>They can occur in any order.</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-5">Loading webR...</button>
-<div id="webr-editor-5"></div>
-<div id="webr-code-output-5"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading webR...</button>
+<div id="webr-editor-4"></div>
+<div id="webr-code-output-4"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-5");
-  const outputDiv = document.getElementById("webr-code-output-5");
-  const editorDiv = document.getElementById("webr-editor-5");
+  const runButton = document.getElementById("webr-run-button-4");
+  const outputDiv = document.getElementById("webr-code-output-4");
+  const editorDiv = document.getElementById("webr-editor-4");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -629,13 +562,13 @@ head(surveys)`,
 <li>Add new columns with calculated values using <code>mutate()</code></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-6">Loading webR...</button>
-<div id="webr-editor-6"></div>
-<div id="webr-code-output-6"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-5">Loading webR...</button>
+<div id="webr-editor-5"></div>
+<div id="webr-code-output-5"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-6");
-  const outputDiv = document.getElementById("webr-code-output-6");
-  const editorDiv = document.getElementById("webr-editor-6");
+  const runButton = document.getElementById("webr-run-button-5");
+  const outputDiv = document.getElementById("webr-code-output-5");
+  const editorDiv = document.getElementById("webr-editor-5");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -712,13 +645,13 @@ head(surveys)`,
 <li>To store them for later use we need to assign them to a variable</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-7">Loading webR...</button>
-<div id="webr-editor-7"></div>
-<div id="webr-code-output-7"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-6">Loading webR...</button>
+<div id="webr-editor-6"></div>
+<div id="webr-code-output-6"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-7");
-  const outputDiv = document.getElementById("webr-code-output-7");
-  const editorDiv = document.getElementById("webr-editor-7");
+  const runButton = document.getElementById("webr-run-button-6");
+  const outputDiv = document.getElementById("webr-code-output-6");
+  const editorDiv = document.getElementById("webr-editor-6");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -793,13 +726,13 @@ head(surveys)`,
 <li>Or we could overwrite the existing variable if we don’t need it</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
-<div id="webr-editor-8"></div>
-<div id="webr-code-output-8"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-7">Loading webR...</button>
+<div id="webr-editor-7"></div>
+<div id="webr-code-output-7"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-8");
-  const outputDiv = document.getElementById("webr-code-output-8");
-  const editorDiv = document.getElementById("webr-editor-8");
+  const runButton = document.getElementById("webr-run-button-7");
+  const outputDiv = document.getElementById("webr-code-output-7");
+  const editorDiv = document.getElementById("webr-editor-7");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -881,13 +814,13 @@ head(surveys)`,
 <li>To sort the surveys table by by weight</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
-<div id="webr-editor-9"></div>
-<div id="webr-code-output-9"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-8">Loading webR...</button>
+<div id="webr-editor-8"></div>
+<div id="webr-code-output-8"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-9");
-  const outputDiv = document.getElementById("webr-code-output-9");
-  const editorDiv = document.getElementById("webr-editor-9");
+  const runButton = document.getElementById("webr-run-button-8");
+  const outputDiv = document.getElementById("webr-code-output-8");
+  const editorDiv = document.getElementById("webr-editor-8");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -961,13 +894,13 @@ head(surveys)`,
 <li>We can reverse the order of the sort by “wrapping” <code>weight</code> in another function, <code>desc</code> for “descending</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
-<div id="webr-editor-10"></div>
-<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-9">Loading webR...</button>
+<div id="webr-editor-9"></div>
+<div id="webr-code-output-9"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-10");
-  const outputDiv = document.getElementById("webr-code-output-10");
-  const editorDiv = document.getElementById("webr-editor-10");
+  const runButton = document.getElementById("webr-run-button-9");
+  const outputDiv = document.getElementById("webr-code-output-9");
+  const editorDiv = document.getElementById("webr-editor-9");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1041,13 +974,13 @@ head(surveys)`,
 <li>We can also sort by multiple columns, so if we wanted to sort first by <code>plot_id</code> and then by date</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
-<div id="webr-editor-11"></div>
-<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-10">Loading webR...</button>
+<div id="webr-editor-10"></div>
+<div id="webr-code-output-10"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-11");
-  const outputDiv = document.getElementById("webr-code-output-11");
-  const editorDiv = document.getElementById("webr-editor-11");
+  const runButton = document.getElementById("webr-run-button-10");
+  const outputDiv = document.getElementById("webr-code-output-10");
+  const editorDiv = document.getElementById("webr-editor-10");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1139,13 +1072,13 @@ head(surveys)`,
 </ul></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
-<div id="webr-editor-12"></div>
-<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-11">Loading webR...</button>
+<div id="webr-editor-11"></div>
+<div id="webr-code-output-11"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-12");
-  const outputDiv = document.getElementById("webr-code-output-12");
-  const editorDiv = document.getElementById("webr-editor-12");
+  const runButton = document.getElementById("webr-run-button-11");
+  const outputDiv = document.getElementById("webr-code-output-11");
+  const editorDiv = document.getElementById("webr-editor-11");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1220,13 +1153,13 @@ head(surveys)`,
 <li>So if we wanted the data for all species except “DS</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
-<div id="webr-editor-13"></div>
-<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-12">Loading webR...</button>
+<div id="webr-editor-12"></div>
+<div id="webr-code-output-12"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-13");
-  const outputDiv = document.getElementById("webr-code-output-13");
-  const editorDiv = document.getElementById("webr-editor-13");
+  const runButton = document.getElementById("webr-run-button-12");
+  const outputDiv = document.getElementById("webr-code-output-12");
+  const editorDiv = document.getElementById("webr-editor-12");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1304,13 +1237,13 @@ head(surveys)`,
 <li>So, to get the data on species “DS” for the year 1995:</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-14">Loading webR...</button>
-<div id="webr-editor-14"></div>
-<div id="webr-code-output-14"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-13">Loading webR...</button>
+<div id="webr-editor-13"></div>
+<div id="webr-code-output-13"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-14");
-  const outputDiv = document.getElementById("webr-code-output-14");
-  const editorDiv = document.getElementById("webr-editor-14");
+  const runButton = document.getElementById("webr-run-button-13");
+  const outputDiv = document.getElementById("webr-code-output-13");
+  const editorDiv = document.getElementById("webr-editor-13");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1384,13 +1317,13 @@ head(surveys)`,
 <li>Alternatively we can use the <code>&amp;</code> symbol, which stands for “and”</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-15">Loading webR...</button>
-<div id="webr-editor-15"></div>
-<div id="webr-code-output-15"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-14">Loading webR...</button>
+<div id="webr-editor-14"></div>
+<div id="webr-code-output-14"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-15");
-  const outputDiv = document.getElementById("webr-code-output-15");
-  const editorDiv = document.getElementById("webr-editor-15");
+  const runButton = document.getElementById("webr-run-button-14");
+  const outputDiv = document.getElementById("webr-code-output-14");
+  const editorDiv = document.getElementById("webr-editor-14");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1467,13 +1400,13 @@ head(surveys)`,
 <li><p>To get data on all of the <em>Dipodomys</em> species</p></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-16">Loading webR...</button>
-<div id="webr-editor-16"></div>
-<div id="webr-code-output-16"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-15">Loading webR...</button>
+<div id="webr-editor-15"></div>
+<div id="webr-code-output-15"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-16");
-  const outputDiv = document.getElementById("webr-code-output-16");
-  const editorDiv = document.getElementById("webr-editor-16");
+  const runButton = document.getElementById("webr-run-button-15");
+  const outputDiv = document.getElementById("webr-code-output-15");
+  const editorDiv = document.getElementById("webr-editor-15");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1555,13 +1488,13 @@ head(surveys)`,
 <li>Based on what we learned before it’s natural to think that we do this by using the condition <code>weight != NA</code></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-17">Loading webR...</button>
-<div id="webr-editor-17"></div>
-<div id="webr-code-output-17"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-16">Loading webR...</button>
+<div id="webr-editor-16"></div>
+<div id="webr-code-output-16"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-17");
-  const outputDiv = document.getElementById("webr-code-output-17");
-  const editorDiv = document.getElementById("webr-editor-17");
+  const runButton = document.getElementById("webr-run-button-16");
+  const outputDiv = document.getElementById("webr-code-output-16");
+  const editorDiv = document.getElementById("webr-editor-16");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1643,13 +1576,13 @@ head(surveys)`,
 <li>So if we wanted all of the data where the weigh is <code>NA</code></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-18">Loading webR...</button>
-<div id="webr-editor-18"></div>
-<div id="webr-code-output-18"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-17">Loading webR...</button>
+<div id="webr-editor-17"></div>
+<div id="webr-code-output-17"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-18");
-  const outputDiv = document.getElementById("webr-code-output-18");
-  const editorDiv = document.getElementById("webr-editor-18");
+  const runButton = document.getElementById("webr-run-button-17");
+  const outputDiv = document.getElementById("webr-code-output-17");
+  const editorDiv = document.getElementById("webr-editor-17");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1724,13 +1657,13 @@ head(surveys)`,
 <li><p>To remove null values we combine this with <code>!</code> for “not”</p></li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-19">Loading webR...</button>
-<div id="webr-editor-19"></div>
-<div id="webr-code-output-19"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-18">Loading webR...</button>
+<div id="webr-editor-18"></div>
+<div id="webr-code-output-18"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-19");
-  const outputDiv = document.getElementById("webr-code-output-19");
-  const editorDiv = document.getElementById("webr-editor-19");
+  const runButton = document.getElementById("webr-run-button-18");
+  const outputDiv = document.getElementById("webr-code-output-18");
+  const editorDiv = document.getElementById("webr-editor-18");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
@@ -1806,13 +1739,13 @@ head(surveys)`,
 <li>For example we might want all of the data on a species that contains weights</li>
 </ul>
 <div class="cell">
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-20">Loading webR...</button>
-<div id="webr-editor-20"></div>
-<div id="webr-code-output-20"><pre style="visibility: hidden"></pre></div>
+<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-19">Loading webR...</button>
+<div id="webr-editor-19"></div>
+<div id="webr-code-output-19"><pre style="visibility: hidden"></pre></div>
 <script type="module">
-  const runButton = document.getElementById("webr-run-button-20");
-  const outputDiv = document.getElementById("webr-code-output-20");
-  const editorDiv = document.getElementById("webr-editor-20");
+  const runButton = document.getElementById("webr-run-button-19");
+  const outputDiv = document.getElementById("webr-code-output-19");
+  const editorDiv = document.getElementById("webr-editor-19");
 
   const editor = CodeMirror((elt) => {
     elt.style.border = "1px solid #eee";
