@@ -119,10 +119,39 @@ ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
 
 ## Exercise
 
-1. Make a scatter plot with `hp` on the x axis and `wt` on the y axis. Label the x axis "Horse Power" and the y axis “Weight”.
-2. Modify the code to make 1 subplot for each value in `gear`.
+Make a scatter plot with `hp` on the x axis and `wt` on the y axis. Label the x axis "Horse Power" and the y axis “Weight”.
+Make one subplot for each value in `gear`.
 
 ```{webr}
 # Add you code here
+```
+
+Your result should look like the plot below
+:::
+
+::: {.callout-tip collapse="true"}
+## Expected Result
+
+```{r}
+#| echo: false
+library(ggplot2)
+ggplot(mtcars, aes(x = hp, y = wt)) +
+  geom_point() +
+  labs(x = "Horse Power", y = "Weight") +
+  facet_wrap(~gear)
+```
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution Code
+
+```{r}
+#| echo: true
+#| eval: false
+library(ggplot2)
+ggplot(mtcars, aes(x = hp, y = wt)) +
+  geom_point() +
+  labs(x = "Horse Power", y = "Weight") +
+  facet_wrap(~gear)
 ```
 :::
