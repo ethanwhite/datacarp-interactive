@@ -1,9 +1,7 @@
 ---
 title: ggplot
 editor: visual
-format:
-  html:
-    include-in-header: header.html
+engine: knitr
 filters:
   - webr
 ---
@@ -21,9 +19,6 @@ await globalThis.webR.installPackages(['ggplot2'])
 
 </script>
 </html>
-
-```{r}
-```
 
 ::: {.callout-warning}
 Installing and loading ggplot2 on webR takes a little while.

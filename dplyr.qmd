@@ -1,15 +1,10 @@
 ---
 title: dplyr
 editor: visual
-format:
-  html:
-    include-in-header: header.html
+engine: knitr
 filters:
   - webr
 ---
-
-```{r}
-```
 
 <html>
 <script type="module">

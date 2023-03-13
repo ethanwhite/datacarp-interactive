@@ -1,14 +1,9 @@
 ---
 title: "Basic R"
-format:
-  html:
-    include-in-header: header.html
+engine: knitr
 filters:
   - webr
 ---
-
-```{r}
-```
 
 ### Basic expressions
 
