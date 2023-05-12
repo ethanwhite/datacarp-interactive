@@ -4,21 +4,9 @@ editor: visual
 engine: knitr
 filters:
   - webr
+webr:
+  packages: ['dplyr', 'readr']
 ---
-
-<html>
-<script type="module">
-
-//=== WebR setup ===
-
-import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs'; 
-globalThis.webR = new WebR(); 
-await globalThis.webR.init(); 
-globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
-await globalThis.webR.installPackages(['dplyr', 'readr'])
-
-</script>
-</html>
 
 ### Introduction to tabular data
 

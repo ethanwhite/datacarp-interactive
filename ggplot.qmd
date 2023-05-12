@@ -4,21 +4,9 @@ editor: visual
 engine: knitr
 filters:
   - webr
+webr:
+  packages: ['ggplot2']
 ---
-
-<html>
-<script type="module">
-
-//=== WebR setup ===
-
-import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs'; 
-globalThis.webR = new WebR(); 
-await globalThis.webR.init(); 
-globalThis.webRCodeShelter = await new globalThis.webR.Shelter();
-await globalThis.webR.installPackages(['ggplot2'])
-
-</script>
-</html>
 
 ::: {.callout-warning}
 Installing and loading ggplot2 on webR takes a little while.
