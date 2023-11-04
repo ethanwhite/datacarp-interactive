@@ -11,7 +11,7 @@ An expression is a set of commands that returns a value. For example let's use R
 
 Click `Run Code` to run the following R code.
 
-```{webr}
+```{webr-r}
 50 * 2.2
 ```
 
@@ -25,21 +25,21 @@ Click `Run Code` to run the following R code.
 * A variable is a name that has a value associated with it
 * We can assign a value to a variable using `<-`
 
-```{webr}
+```{webr-r}
 weight_kg <- 50
 ```
 
 * No value is shown when we run this code because the value is stored in the variable
 * To see the value we can run the name of the variable on it's own
 
-```{webr}
+```{webr-r}
 weight_kg <- 50
 weight_kg
 ```
 
 * The variable works just like the value itself
 
-```{webr}
+```{webr-r}
 weight_kg * 10
 weight_kg * 2.2
 ```
@@ -47,7 +47,7 @@ weight_kg * 2.2
 * The value associate with the variable won't change unless you assign a new value to it directly
 * If we do a calculation with the variable and check it's value again
 
-```{webr}
+```{webr-r}
 weight_kg
 weight_kg * 2
 weight_kg
@@ -56,7 +56,7 @@ weight_kg
 * We can see that it doesn't change
 * If we want to update the variable we have to store a new value
 
-```{webr}
+```{webr-r}
 weight_kg <- 26
 weight_kg
 ```
@@ -68,7 +68,7 @@ weight_kg
 Here is a small program that converts a mass in kilograms to a mass in grams and
 then prints out the resulting value.
 
-```{webr}
+```{webr-r}
 mass_kg <- 2.62
 mass_g <- mass_kg * 1000
 mass_g
@@ -84,7 +84,7 @@ Create similar code to convert a mass in pounds to a mass kilograms.
 * A function is a complicated expression.
 * Command that returns a value
 
-```{webr}
+```{webr-r}
 sqrt(49)
 ```
 
@@ -94,7 +94,7 @@ sqrt(49)
     * `sqrt()` is the name of the function, and `49` is the argument.
 * We can also pass variables as the argument
 
-```{webr}
+```{webr-r}
 weight_lb <- 0.11
 sqrt(weight_lb)
 ```
@@ -103,20 +103,20 @@ sqrt(weight_lb)
 * All values and therefore all variables have types
 * `str`, short for "structure", lets us look at them
 
-```{webr}
+```{webr-r}
 str(weight_lb)
 ```
 
 * Another data type is for text data
 * We right text inside of quotation makes
 
-```{webr}
+```{webr-r}
 "hello world"
 ```
 
 * If we look at the structure of some text we see that it is type character
 
-```{webr}
+```{webr-r}
 str("hello world")
 ```
 
@@ -125,7 +125,7 @@ str("hello world")
     * Typing `round()` shows there are two arguments
     * Number to be rounded and number of digits
 
-```{webr}
+```{webr-r}
 round(weight_lb, 1)
 ```
 
@@ -134,13 +134,13 @@ round(weight_lb, 1)
   function to have changed the value of the variable
 * But looking at `weight_lb` we see that it hasn't been rounded
 
-```{webr}
+```{webr-r}
 weight_lb
 ```
 
 * To save the output of a function we assign it to a variable.
 
-```{webr}
+```{webr-r}
 weight_rounded <- round(weight_lb, 1)
 weight_rounded
 ```

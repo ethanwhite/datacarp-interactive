@@ -25,13 +25,13 @@ Don't worry, once you've waited to load the package everything else will be quic
 
 * Load the package and some data
 
-```{webr}
+```{webr-r}
 library(ggplot2)
 ```
 
 * To build a plot using `ggplot` we start with the `ggplot()` function
 
-```{webr}
+```{webr-r}
 ggplot()
 ```
 
@@ -44,7 +44,7 @@ ggplot()
 * We'll start with telling ggplot what value should be on the x and y axes
 * Let's plot the relationship betwen the circumference of an acacia and its height
 
-```{webr}
+```{webr-r}
 ggplot(data = mtcars, mapping = aes(x = mpg, y = hp))
 ```
 
@@ -54,7 +54,7 @@ ggplot(data = mtcars, mapping = aes(x = mpg, y = hp))
 * We do this by adding a `+` after the the `ggplot` function and then adding something called a `geom`, which stands for `geometry`
 * To make a scatter plot we use `geom_point`
 
-```{webr}
+```{webr-r}
 ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
   geom_point()
 ```
@@ -65,7 +65,7 @@ ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
   * the `color` of the points, we'll set it to `"blue"`
   * the transparency of the points, which is called `alpha`, we'll set it to 0.5
 
-```{webr}
+```{webr-r}
 ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
   geom_point(size = 3, color = "blue", alpha = 0.5)
 ```
@@ -74,7 +74,7 @@ ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
 
 * To add labels (like documentation for your graphs!) we use the `labs` function
 
-```{webr}
+```{webr-r}
 ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
   geom_point(size = 3, color = "blue", alpha = 0.5) +
   labs(x = "Miles per Gallon", y = "Horse Power",
@@ -86,7 +86,7 @@ ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
 * Group on a single graph
 * Look at influence of experimental treatment
 
-```{webr}
+```{webr-r}
 ggplot(data = mtcars, mapping = aes(x = mpg, y = hp, color = cyl)) +
   geom_point(size = 3, alpha = 0.5)
 ```
@@ -95,7 +95,7 @@ ggplot(data = mtcars, mapping = aes(x = mpg, y = hp, color = cyl)) +
 
 * We can also split each group into different subplots (known as facets)
 
-```{webr}
+```{webr-r}
 ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
   geom_point(size = 3, alpha = 0.5) +
   facet_wrap(~cyl)
@@ -110,7 +110,7 @@ ggplot(data = mtcars, mapping = aes(x = mpg, y = hp)) +
 Make a scatter plot with `hp` on the x axis and `wt` on the y axis. Label the x axis "Horse Power" and the y axis “Weight”.
 Make one subplot for each value in `gear`.
 
-```{webr}
+```{webr-r}
 # Add you code here
 ```
 

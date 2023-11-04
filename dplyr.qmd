@@ -24,7 +24,7 @@ webr:
 * So don't want to have to worry about all of the packages we've installed every time we right a piece of code
 * Load all of the functions in the package:
 
-```{webr}
+```{webr-r}
 library(dplyr)
 library(readr)
 ```
@@ -33,7 +33,7 @@ library(readr)
 
 * Lets download the `surveys.csv` and load into `R` using `read.csv()`.
 
-```{webr}
+```{webr-r}
 download.file("https://ndownloader.figshare.com/files/2292172",
   "surveys.csv")
 surveys <- read_csv("surveys.csv")
@@ -48,13 +48,13 @@ head(surveys)
 
 * Select a subset of columns.
 
-```{webr}
+```{webr-r}
 select(surveys, year, month, day)
 ```
 
 * They can occur in any order.
 
-```{webr}
+```{webr-r}
 select(surveys, month, day, year)
 ```
 
@@ -64,7 +64,7 @@ select(surveys, month, day, year)
 
 * Add new columns with calculated values using `mutate()`
 
-```{webr}
+```{webr-r}
 mutate(surveys, hindfoot_length_cm = hindfoot_length / 10)
 ```
 
@@ -73,14 +73,14 @@ mutate(surveys, hindfoot_length_cm = hindfoot_length / 10)
 * All of these commands produce new values, data frames in this case
 * To store them for later use we need to assign them to a variable
 
-```{webr}
+```{webr-r}
 surveys_plus <- mutate(surveys,
                        hindfoot_length_cm = hindfoot_length / 10)
 ```
 
 * Or we could overwrite the existing variable if we don't need it
 
-```{webr}
+```{webr-r}
 surveys <- mutate(surveys,
                   hindfoot_length_cm = hindfoot_length / 10)
 ```
@@ -92,19 +92,19 @@ surveys <- mutate(surveys,
 * We can sort the data in the table using `arrange`
 * To sort the surveys table by by weight
 
-```{webr}
+```{webr-r}
 arrange(surveys, weight)
 ```
 
 * We can reverse the order of the sort by "wrapping" `weight` in another function, `desc` for "descending
 
-```{webr}
+```{webr-r}
 arrange(surveys, desc(weight))
 ```
 
 * We can also sort by multiple columns, so if we wanted to sort first by `plot_id` and then by date
 
-```{webr}
+```{webr-r}
 arrange(surveys, plot_id, year, month, day)
 ```
 
@@ -124,14 +124,14 @@ arrange(surveys, plot_id, year, month, day)
     * And then the value, `"DS"`
     * `DS` here is a string, not a variable or a column name, so we enclose it in quotation marks
   
-```{webr}
+```{webr-r}
 filter(surveys, species_id == "DS")
 ```
 
 * Like with vectors we can have a condition that is "not equal to" using "!="
 * So if we wanted the data for all species except "DS
 
-```{webr}
+```{webr-r}
 filter(surveys, species_id != "DS")
 ```
 
@@ -141,13 +141,13 @@ filter(surveys, species_id != "DS")
 * Do this in `dplyr` using additional comma separate arguments
 * So, to get the data on species "DS" for the year 1995:
 
-```{webr}
+```{webr-r}
 filter(surveys, species_id == "DS", year > 1995)
 ```
 
 * Alternatively we can use the `&` symbol, which stands for "and"
 
-```{webr}
+```{webr-r}
 filter(surveys, species_id == "DS" & year > 1995)
 ```
 
@@ -157,7 +157,7 @@ filter(surveys, species_id == "DS" & year > 1995)
 * Do this using `|`
 * To get data on all of the *Dipodomys* species
 
-```{webr}
+```{webr-r}
 filter(surveys, species_id == "DS" | species_id == "DM" | species_id == "DO")
 ```
 
@@ -169,7 +169,7 @@ filter(surveys, species_id == "DS" | species_id == "DM" | species_id == "DO")
 * One of the common tasks we use `filter` for is removing null values from data
 * Based on what we learned before it's natural to think that we do this by using the condition `weight != NA`
 
-```{webr}
+```{webr-r}
 filter(surveys, weight != NA)
 ```
 
@@ -181,7 +181,7 @@ filter(surveys, weight != NA)
 * `is.na()` checks if the value is `NA`
 * So if we wanted all of the data where the weigh is `NA`
 
-```{webr}
+```{webr-r}
 filter(surveys, is.na(weight))
 ```
 
@@ -189,7 +189,7 @@ filter(surveys, is.na(weight))
 
 * To remove null values we combine this with `!` for "not"
 
-```{webr}
+```{webr-r}
 filter(surveys, !is.na(weight))
 ```
 
@@ -197,7 +197,7 @@ filter(surveys, !is.na(weight))
 * It is common to combine a null filter with other conditions using "and"
 * For example we might want all of the data on a species that contains weights
 
-```{webr}
+```{webr-r}
 filter(surveys, species_id == "DS", !is.na(weight))
 ```
 
