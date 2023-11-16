@@ -150,6 +150,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     pointer-events: none;
     opacity: .65
   }
+
+  .reveal pre div code.qwebr-output-code-stdout, .reveal pre div code.qwebr-output-code-stderr {
+    padding: 0px;
+    display: contents;
+  }
 </style>
 
 <script type="module">
@@ -456,15 +461,17 @@ Warning
 <ul>
 <li>Load the package and some data</li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-1">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-1" class="qwebr-interactive-area">
-  <div id="qwebr-editor-1" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-1" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-1">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-1" class="qwebr-console-area">
+    <div id="qwebr-editor-1" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-1" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-1" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-1" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -625,7 +632,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -738,15 +745,17 @@ Warning
 <ul>
 <li>To build a plot using <code>ggplot</code> we start with the <code>ggplot()</code> function</li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-2">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-2" class="qwebr-interactive-area">
-  <div id="qwebr-editor-2" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-2" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-2">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-2" class="qwebr-console-area">
+    <div id="qwebr-editor-2" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-2" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-2" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-2" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -907,7 +916,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -1027,15 +1036,17 @@ Warning
 <li>We’ll start with telling ggplot what value should be on the x and y axes</li>
 <li>Let’s plot the relationship betwen the circumference of an acacia and its height</li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-3">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-3" class="qwebr-interactive-area">
-  <div id="qwebr-editor-3" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-3" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-3">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-3" class="qwebr-console-area">
+    <div id="qwebr-editor-3" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-3" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-3" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-3" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -1196,7 +1207,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -1312,15 +1323,17 @@ Warning
 <li>We do this by adding a <code>+</code> after the the <code>ggplot</code> function and then adding something called a <code>geom</code>, which stands for <code>geometry</code></li>
 <li>To make a scatter plot we use <code>geom_point</code></li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-4">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-4" class="qwebr-interactive-area">
-  <div id="qwebr-editor-4" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-4" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-4">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-4" class="qwebr-console-area">
+    <div id="qwebr-editor-4" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-4" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-4" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-4" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -1482,7 +1495,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -1601,15 +1614,17 @@ Warning
 <li>the transparency of the points, which is called <code>alpha</code>, we’ll set it to 0.5</li>
 </ul></li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-5">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-5" class="qwebr-interactive-area">
-  <div id="qwebr-editor-5" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-5" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-5">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-5" class="qwebr-console-area">
+    <div id="qwebr-editor-5" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-5" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-5" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-5" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -1771,7 +1786,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -1885,15 +1900,17 @@ Warning
 <li><p>Try changing these values to make the graph look like you want it to</p></li>
 <li><p>To add labels (like documentation for your graphs!) we use the <code>labs</code> function</p></li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-6">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-6" class="qwebr-interactive-area">
-  <div id="qwebr-editor-6" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-6" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-6">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-6" class="qwebr-console-area">
+    <div id="qwebr-editor-6" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-6" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-6" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-6" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -2057,7 +2074,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -2174,15 +2191,17 @@ Warning
 <li>Group on a single graph</li>
 <li>Look at influence of experimental treatment</li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-7">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-7" class="qwebr-interactive-area">
-  <div id="qwebr-editor-7" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-7" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-7">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-7" class="qwebr-console-area">
+    <div id="qwebr-editor-7" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-7" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-7" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-7" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -2344,7 +2363,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -2458,15 +2477,17 @@ Warning
 <li><p>Try changing the above code to color based on the <code>gear</code></p></li>
 <li><p>We can also split each group into different subplots (known as facets)</p></li>
 </ul>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-8">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-8" class="qwebr-interactive-area">
-  <div id="qwebr-editor-8" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-8" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-8">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-8" class="qwebr-console-area">
+    <div id="qwebr-editor-8" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-8" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-8" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-8" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -2629,7 +2650,7 @@ Warning
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code
@@ -2753,15 +2774,17 @@ Exercise
 </div>
 <div class="callout-body-container callout-body">
 <p>Make a scatter plot with <code>hp</code> on the x axis and <code>wt</code> on the y axis. Label the x axis “Horse Power” and the y axis “Weight”. Make one subplot for each value in <code>gear</code>.</p>
-<button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-9">🟡 Loading
-  webR...</button>
 <div id="qwebr-interactive-area-9" class="qwebr-interactive-area">
-  <div id="qwebr-editor-9" class="qwebr-editor"></div>
-  <div id="qwebr-output-code-area-9" class="qwebr-output-code-area" aria-live="assertive">
-    <pre style="visibility: hidden"></pre>
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-9">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-9" class="qwebr-console-area">
+    <div id="qwebr-editor-9" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-9" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
   </div>
-</div>
-<div id="qwebr-output-graph-area-9" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-9" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -2922,7 +2945,7 @@ Exercise
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
 
     // Capture output data from evaluating the code

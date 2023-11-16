@@ -2,8 +2,8 @@
   <div id="qwebr-output-code-area-{{WEBRCOUNTER}}" class="qwebr-output-code-area" aria-live="assertive">
     <pre style="visibility: hidden"></pre>
   </div>
-</div>
-<div id="qwebr-output-graph-area-{{WEBRCOUNTER}}" class="qwebr-output-graph-area">
+  <div id="qwebr-output-graph-area-{{WEBRCOUNTER}}" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
@@ -50,7 +50,7 @@
     // Initialize webR
     await webR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr-r} package
+    // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width={{WIDTH}}, height={{HEIGHT}})");
 
     // Capture output data from evaluating the code

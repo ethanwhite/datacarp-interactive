@@ -417,14 +417,14 @@ function enableWebRCodeCell(el)
   -- not sure if this will work with an epub (may need html:js)
   if el.attr and quarto.doc.is_format("html") then
 
-    -- Check to see if any form of the {webr-r} tag is present 
+    -- Check to see if any form of the {webr} tag is present 
 
-    -- Look for the original compute cell type `{webr-r}` 
+    -- Look for the original compute cell type `{webr}` 
     -- If the compute engine is:
-    -- - jupyter: this appears as `{webr-r}` 
+    -- - jupyter: this appears as `{webr}` 
     -- - knitr: this appears as `webr`
     --  since the later dislikes custom engines
-    local originalEngine = el.attr.classes:includes("{webr-r}") or el.attr.classes:includes("webr")
+    local originalEngine = el.attr.classes:includes("{webr}") or el.attr.classes:includes("webr")
 
     -- Check for the new engine syntax that allows for the cell to be 
     -- evaluated in VS Code or RStudio editor views, c.f.
