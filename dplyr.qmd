@@ -5,7 +5,7 @@ engine: knitr
 filters:
   - webr
 webr:
-  packages: ['dplyr', 'readr']
+  packages: ['dplyr', 'readr', 'ratdat']
 ---
 
 ### Introduction to tabular data
@@ -27,16 +27,14 @@ webr:
 ```{webr-r}
 library(dplyr)
 library(readr)
+library(ratdat)
 ```
 
 #### Loading and viewing the dataset
 
-* Lets download the `surveys.csv` and load into `R` using `read.csv()`.
+* Data on small mammal surveys is available from `ratdat` in the `surveys` data frame
 
 ```{webr-r}
-download.file("https://ndownloader.figshare.com/files/2292172",
-  "surveys.csv")
-surveys <- read_csv("surveys.csv")
 head(surveys)
 ```
 

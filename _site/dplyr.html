@@ -129,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
   const initializeWebRTimerStart = performance.now();
 
   // Determine if we need to install R packages
-  var installRPackagesList = ['dplyr', 'readr'];
+  var installRPackagesList = ['dplyr', 'readr', 'ratdat'];
   // Check to see if we have an empty array, if we do set to skip the installation.
   var setupRPackages = !(installRPackagesList.indexOf("") !== -1);
   var autoloadRPackages = true;
@@ -447,7 +447,8 @@ ul.task-list li input[type="checkbox"] {
   require(['vs/editor/editor.main'], function () {
     editor = monaco.editor.create(editorDiv, {
       value: `library(dplyr)
-library(readr)`,
+library(readr)
+library(ratdat)`,
       language: 'r',
       theme: 'vs-light',
       automaticLayout: true,           // TODO: Could be problematic for slide decks
@@ -705,7 +706,7 @@ library(readr)`,
 <section id="loading-and-viewing-the-dataset" class="level4">
 <h4 class="anchored" data-anchor-id="loading-and-viewing-the-dataset">Loading and viewing the dataset</h4>
 <ul>
-<li>Lets download the <code>surveys.csv</code> and load into <code>R</code> using <code>read.csv()</code>.</li>
+<li>Data on small mammal surveys is available from <code>ratdat</code> in the <code>surveys</code> data frame</li>
 </ul>
 <div id="qwebr-interactive-area-2" class="qwebr-interactive-area">
   <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-2">🟡 Loading
@@ -733,10 +734,7 @@ library(readr)`,
   let editor;
   require(['vs/editor/editor.main'], function () {
     editor = monaco.editor.create(editorDiv, {
-      value: `download.file("https://ndownloader.figshare.com/files/2292172",
-  "surveys.csv")
-surveys <- read_csv("surveys.csv")
-head(surveys)`,
+      value: `head(surveys)`,
       language: 'r',
       theme: 'vs-light',
       automaticLayout: true,           // TODO: Could be problematic for slide decks
